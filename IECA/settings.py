@@ -103,15 +103,13 @@ WSGI_APPLICATION = 'IECA.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/5.1/ref/settings/#databases
 
+# Base de datos (Neon PostgreSQL)
 DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'ieca_hx1n',  # Nombre de la base de datos
-        'USER': 'ieca_hx1n_user',  # Nombre de usuario
-        'PASSWORD': 'hiDRNhSrQ9qdsZTm7yutekw2xTIvLJGu',  # Contraseña
-        'HOST': 'dpg-cufvi42n91rc73ckcn40-a.oregon-postgres.render.com',  # Host de PostgreSQL
-        'PORT': '5432',  # Puerto de PostgreSQL
-    }
+    'default': dj_database_url.parse(
+        os.environ.get('DATABASE_URL', 'postgresql://neondb_owner:npg_AYZSai8rX9ok@ep-mute-resonance-a44kvnh1-pooler.us-east-1.aws.neon.tech/task_db?sslmode=require'),
+        conn_max_age=600,
+        ssl_require=True
+    )
 }
 
 
