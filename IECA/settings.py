@@ -103,14 +103,29 @@ WSGI_APPLICATION = 'IECA.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/5.1/ref/settings/#databases
 
-# Base de datos (Neon PostgreSQL)
-DATABASES = {
-    'default': dj_database_url.parse(
-        os.environ.get('DATABASE_URL', 'postgresql://neondb_owner:npg_AYZSai8rX9ok@ep-mute-resonance-a44kvnh1-pooler.us-east-1.aws.neon.tech/task_db?sslmode=require'),
-        conn_max_age=600,
-        ssl_require=True
-    )
-}
+# Base de datos
+if 'RENDER' in os.environ:
+    # En Render, usar DATABASE_URL con dj_database_url
+    DATABASES = {
+        'default': dj_database_url.parse(
+            os.environ.get('DATABASE_URL'),
+            conn_max_age=600,
+            ssl_require=True
+        )
+    }
+else:
+    # En local, usar configuración directa para Neon
+    DATABASES = {
+        'default': {
+            'ENGINE': 'django.db.backends.postgresql',
+            'NAME': 'task_db',  # Corrige a 'task_db' si es necesario
+            'USER': 'neondb_owner',
+            'PASSWORD': 'npg_AYZSai8rX9ok',  # Usa la nueva contraseña
+            'HOST': 'ep-mute-resonance-a44kvnh1-pooler.us-east-1.aws.neon.tech',
+            'PORT': '5432',
+            'OPTIONS': {'sslmode': 'require'},
+        }
+    }
 
 
 
